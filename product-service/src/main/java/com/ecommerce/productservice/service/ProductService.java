@@ -21,10 +21,8 @@ public class ProductService {
                 .name(productRequest.name())
                 .race(productRequest.race())
                 .color(productRequest.color())
-                .age(productRequest.age())
                 .price(productRequest.price())
                 .description(productRequest.description())
-                .sex(productRequest.sex())
                 .image(productRequest.image())
                 .build();
 
@@ -35,10 +33,8 @@ public class ProductService {
                 product.getName(),
                 product.getRace(),
                 product.getColor(),
-                product.getAge(),
                 product.getPrice(),
                 product.getDescription(),
-                product.getSex(),
                 product.getImage()
         );
     }
@@ -51,10 +47,8 @@ public class ProductService {
                         product.getName(),
                         product.getRace(),
                         product.getColor(),
-                        product.getAge(),
                         product.getPrice(),
                         product.getDescription(),
-                        product.getSex(),
                         product.getImage()
                 ))
                 .toList();

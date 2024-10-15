@@ -38,10 +38,8 @@ class ProductServiceApplicationTests {
                 "name": "Whiskers",
                 "race": "Siamese",
                 "color": "Cream and Brown",
-                "age": "2 years",
                 "price": 150.00,
                 "description": "A playful Siamese cat that loves to climb and explore.",
-                "sex": "Male",
                 "image": "https://example.com/images/whiskers.jpg"
             }
             """;
@@ -57,10 +55,8 @@ class ProductServiceApplicationTests {
 				.body("name", equalTo("Whiskers"))
 				.body("race", equalTo("Siamese"))
 				.body("color", equalTo("Cream and Brown"))
-				.body("age", equalTo("2 years"))
 				.body("price", equalTo(150.00f))
 				.body("description", equalTo("A playful Siamese cat that loves to climb and explore."))
-				.body("sex", equalTo("Male"))
 				.body("image", equalTo("https://example.com/images/whiskers.jpg"));
 	}
 }

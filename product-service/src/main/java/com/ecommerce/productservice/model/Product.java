@@ -22,9 +22,7 @@ public class Product {
     private String name;
     private String race;
     private String color;
-    private String age;
     private BigDecimal price;
     private String description;
-    private String sex;
     private String image; // URL
 }
