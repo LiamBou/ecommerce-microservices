@@ -1,6 +1,7 @@
-FROM openjdk:17-jdk-slim
+FROM openjdk:17
 
-# Copier le fichier JAR de l'application dans le conteneur
-COPY target/stock-service.jar ./stock-service.jar
+ADD target/stock-api.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
