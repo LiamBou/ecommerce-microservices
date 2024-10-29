@@ -53,4 +53,24 @@ public class ProductService {
                 ))
                 .toList();
     }
+
+    public ProductResponse getProductById(String id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getRace(),
+                product.getColor(),
+                product.getPrice(),
+                product.getDescription(),
+                product.getImage()
+        );
+    }
+
+    public void deleteProduct(String id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        productRepository.delete(product);
+    }
 }

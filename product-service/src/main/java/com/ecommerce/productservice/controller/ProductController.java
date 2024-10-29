@@ -2,7 +2,6 @@ package com.ecommerce.productservice.controller;
 
 import com.ecommerce.productservice.dto.ProductRequest;
 import com.ecommerce.productservice.dto.ProductResponse;
-import com.ecommerce.productservice.model.Product;
 import com.ecommerce.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,4 +27,18 @@ public class ProductController {
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductResponse getProductById(@PathVariable String id) {
+        return productService.getProductById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable String id) {
+        productService.deleteProduct(id);
+    }
 }
+
+
