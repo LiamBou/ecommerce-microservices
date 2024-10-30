@@ -1,2 +1,2 @@
 rootProject.name = 'ecommerce-microservices'
-include 'event-models', 'stock-service'
+include 'event-models', 'stock-service', 'product-service'
