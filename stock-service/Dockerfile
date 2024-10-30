@@ -1,6 +1,6 @@
 FROM openjdk:17
 
-ADD target/stock-api.jar app.jar
+ADD stock-service/target/stock-api.jar app.jar
 
 EXPOSE 8080
 

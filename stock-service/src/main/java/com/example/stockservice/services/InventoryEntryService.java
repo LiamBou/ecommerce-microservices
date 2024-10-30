@@ -14,5 +14,6 @@ public interface InventoryEntryService {
     InventoryEntryDto updateEntry(String article_id, int quantity);
     void deleteEntry(int id);
     InventoryEntryDto getEntryByArticleId(String articleId);
+    void decreaseStock(String articleId, int quantity);
 
 }

@@ -50,4 +50,9 @@ public class InventoryEntryServiceImpl implements InventoryEntryService {
     public InventoryEntryDto getEntryByArticleId(String articleId){
         return inventoryEntryRepsitory.findByArticleId(articleId).map(InventoryEntry::toDto).orElse(null);
     }
+
+    @Override
+    public void decreaseStock(String articleId, int quantity) {
+        inventoryEntryRepsitory.findByArticleId(articleId).ifPresent(inventoryEntry -> inventoryEntryRepsitory.updateQuantityById(inventoryEntry.getId(), inventoryEntry.getQuantity() - quantity));
+    }
 }

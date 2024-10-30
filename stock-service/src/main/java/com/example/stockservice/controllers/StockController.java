@@ -15,12 +15,10 @@ import java.util.List;
 @RestController("api/v1/stock/")
 public class StockController {
 
-  private KafkaTemplate<String, String> kafkaTemplate;
-  private InventoryEntryService inventoryEntryService;
+  private final InventoryEntryService inventoryEntryService;
 
     @Autowired
     public StockController(KafkaTemplate<String, String> kafkaTemplate, InventoryEntryService inventoryEntryService) {
-        this.kafkaTemplate = kafkaTemplate;
         this.inventoryEntryService = inventoryEntryService;
     }
 
