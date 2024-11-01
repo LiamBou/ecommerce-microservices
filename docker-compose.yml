@@ -19,25 +19,25 @@ services:
     ports:
       - '9092:9092'
 
-  stock-service:
-    build:
-      context: ./stock-service
-      dockerfile: Dockerfile
-    container_name: stock-service
-    depends_on:
-      - stock-db
-      - kafka
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD="admin"
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stock-db:5432/stock-db
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-
-    ports:
-      - "8080:8080"
+#  stock-service:
+#    build:
+#      context: ./stock-service
+#      dockerfile: Dockerfile
+#    container_name: stock-service
+#    depends_on:
+#      - stock-db
+#      - kafka
+#    environment:
+#      - POSTGRES_USER=admin
+#      - POSTGRES_PASSWORD="admin"
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://stock-db:5432/stock-db
+#      - SPRING_DATASOURCE_USERNAME=admin
+#      - SPRING_DATASOURCE_PASSWORD=admin
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+#
+#    ports:
+#      - "8080:8080"
 
   stock-db:
     image: postgres:latest
