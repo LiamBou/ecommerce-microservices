@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
-@RestController("api/v1/stock/")
+@RestController("/stock")
 public class StockController {
 
   private final InventoryEntryService inventoryEntryService;
@@ -26,7 +26,7 @@ public class StockController {
      * Récupérer tous les articles de l'inventaire
      * @return la liste des articles avec leur quantité
      */
-    @GetMapping("get/all")
+    @GetMapping("/get/all")
     public List<InventoryEntryDto> getAllEntries() {
       var inventoryEntries = inventoryEntryService.getAllEntrys();
         for (InventoryEntryDto inventoryEntry : inventoryEntries) {
@@ -40,7 +40,7 @@ public class StockController {
      * @param articl_id l'id de l'article
      * @return la quantité de l'article
      */
-    @GetMapping("get/{article_id}")
+    @GetMapping("/get/{article_id}")
     public int getEntryById(@PathVariable("article_id") String articl_id) {
         var inventoryEntry = inventoryEntryService.getEntryByArticleId(articl_id);
         if (inventoryEntry == null) {
@@ -55,7 +55,7 @@ public class StockController {
      * @param article_id l'id de l'article
      * @param quantity la quantité à ajouter
      */
-  @PostMapping("add/{article_id}/{quantity}")
+  @PostMapping("/add/{article_id}/{quantity}")
   public void addArticle(@PathVariable("article_id") String article_id, @PathVariable("quantity") int quantity) {
       if(inventoryEntryService.getEntryByArticleId(article_id) != null) {
           // update le stock lié à l'item de l'inventaire

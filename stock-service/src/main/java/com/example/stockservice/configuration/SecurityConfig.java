@@ -20,7 +20,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",          // Swagger UI
                                 "/swagger-ui.html",        // Swagger UI HTML page
                                 "/webjars/**" ,             // Webjars for Swagger
-                                "/api/v1/stock/test"
+                                "/stock/test"
                         ).permitAll()// Allow access to these endpoints
                         .anyRequest().permitAll())
                         .csrf(AbstractHttpConfigurer::disable);// Disable CSRF for API requests

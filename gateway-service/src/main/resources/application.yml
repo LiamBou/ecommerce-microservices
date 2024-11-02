@@ -1,0 +1,59 @@
+server:
+  port: 8084
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+spring:
+  application:
+    name: test-service
+  cloud:
+
+    gateway:
+      routes:
+        - id: stock-service
+          uri: lb://stock-service
+          predicates:
+            - Path=/stock/**
+          filters:
+            - StripPrefix=1
+
+#        - id: product-service
+#          uri: lb://product-service
+#          predicates:
+#            - Path=/product/**
+#          filters:
+#            - StripPrefix=1
+#
+#        - id: order-service
+#          uri: lb://order-service
+#          predicates:
+#            - Path=/order/**
+#          filters:
+#            - StripPrefix=1
+#
+#        - id: payment-service
+#          uri: lb://payment-service
+#          predicates:
+#            - Path=/payment/**
+#          filters:
+#            - StripPrefix=1
+    discovery:
+      enabled: true
+
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    hostname: gateway-service
+    prefer-ip-address: false
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+
+

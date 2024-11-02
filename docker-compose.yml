@@ -2,6 +2,7 @@ version: '3.8'
 
 networks:
   microservices-net:
+    driver: bridge
 
 services:
 
@@ -29,13 +30,31 @@ services:
     networks:
       - microservices-net
 
+
   eureka-server:
-    image: 'springcloud/eureka:latest'
+    build:
+      context: .
+      dockerfile: ./eureka-server/Dockerfile
     container_name: eureka-server
     ports:
       - "8761:8761"
     networks:
+        - microservices-net
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: ./gateway-service/Dockerfile
+    container_name: gateway-service
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    ports:
+      - "8084:8084"
+    networks:
       - microservices-net
+
 
   stock-service:
     build:
@@ -54,9 +73,9 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     ports:
-      - "8080:8080"
+      - "8081:8081"
     networks:
       - microservices-net
 
