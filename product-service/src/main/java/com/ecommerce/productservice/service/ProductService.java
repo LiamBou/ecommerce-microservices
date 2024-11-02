@@ -2,6 +2,7 @@ package com.ecommerce.productservice.service;
 
 import com.ecommerce.productservice.dto.ProductRequest;
 import com.ecommerce.productservice.dto.ProductResponse;
+import com.ecommerce.productservice.exception.ProductNotFoundException;
 import com.ecommerce.productservice.model.Product;
 import com.ecommerce.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class ProductService {
 
     public ProductResponse getProductById(String id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
@@ -70,7 +71,7 @@ public class ProductService {
 
     public void deleteProduct(String id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
         productRepository.delete(product);
     }
 }
