@@ -23,7 +23,8 @@ public class Order {
 
     private Long userId;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems;
 
     private double totalAmount;
