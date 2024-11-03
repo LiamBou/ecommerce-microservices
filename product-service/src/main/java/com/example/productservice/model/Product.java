@@ -1,4 +1,4 @@
-package com.ecommerce.productservice.model;
+package com.example.productservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

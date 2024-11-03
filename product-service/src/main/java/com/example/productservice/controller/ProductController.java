@@ -1,8 +1,8 @@
-package com.ecommerce.productservice.controller;
+package com.example.productservice.controller;
 
-import com.ecommerce.productservice.dto.ProductRequest;
-import com.ecommerce.productservice.dto.ProductResponse;
-import com.ecommerce.productservice.service.ProductService;
+import com.example.productservice.dto.ProductRequest;
+import com.example.productservice.dto.ProductResponse;
+import com.example.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -91,7 +91,7 @@ services:
     networks:
       - microservices-net
 
-#
+
 #  product-service:
 #    image: product-service:latest
 #    build:
@@ -108,19 +108,19 @@ services:
 #    ports:
 #      - "8081:8081"
 #
-#  product-mongodb:
-#    image: mongo:latest
-#    container_name: product-mongodb
-#    ports:
-#      - "27017:27017"
-#    networks:
-#      - microservices-net
-#    environment:
-#        MONGO_INITDB_ROOT_USERNAME: root
-#        MONGO_INITDB_ROOT_PASSWORD: password
-#        MONGO_INITDB_DATABASE: product-service
-#    volumes:
-#      - ./data:/data/db
+  product-mongodb:
+    image: mongo:latest
+    container_name: product-mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - microservices-net
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: password
+        MONGO_INITDB_DATABASE: product-service
+    volumes:
+      - ./data:/data/db
 #
 #
 #  order-mysql:
