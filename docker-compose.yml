@@ -94,21 +94,21 @@ services:
       - microservices-net
 
 
-#  product-service:
-#    image: product-service:latest
-#    build:
-#      context: .
-#      dockerfile: ./product-service/Dockerfile
-#    container_name: product-service
-#    depends_on:
-#      - product-mongodb
-#    environment:
-#      - SPRING_DATA_MONGODB_URI=mongodb://root:password@product-mongodb:27017/product-service?authSource=admin
-#      - SPRING_DATA_MONGODB_DATABASE=product-service
-#      - SPRING_DATA_MONGODB_USERNAME=root
-#      - SPRING_DATA_MONGODB_PASSWORD=password
-#    ports:
-#      - "8083:8083"
+  product-service:
+    image: product-service:latest
+    build:
+      context: .
+      dockerfile: ./product-service/Dockerfile
+    container_name: product-service
+    depends_on:
+      - product-mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://root:password@product-mongodb:27017/product-service?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=product-service
+      - SPRING_DATA_MONGODB_USERNAME=root
+      - SPRING_DATA_MONGODB_PASSWORD=password
+    ports:
+      - "8083:8083"
 
   product-mongodb:
     image: mongo:latest
