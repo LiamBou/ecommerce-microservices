@@ -1,7 +1,5 @@
 package com.example.stockservice.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.StockArticle;
 import org.example.StockEvent;
 import org.springframework.beans.factory.annotation.Autowired;
