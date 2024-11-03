@@ -1,25 +1,27 @@
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+FROM gradle:8.10.2-jdk17 AS build
 
 WORKDIR /app
 
+COPY event-models/build.gradle ./
+COPY event-models/src/main ./src/main
 
-# Copy and build shared library
-COPY event-models/pom.xml ./event-models/
-COPY event-models/src ./event-models/src
+RUN gradle clean build -x test
 
-RUN mvn -f ./event-models/pom.xml clean install -DskipTests=true
-
-COPY stock-service/pom.xml ./
+COPY stock-service/build.gradle settings.gradle ./
 COPY stock-service/src/main ./src/main
 
-RUN mvn clean install -DskipTests=true
+RUN gradle clean build -x test
 
 FROM openjdk:17
 
+#RUN addgroup -S app-group && adduser -S app-user -G app-group
+
+#USER app-user
+
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar stock-service.jar
+COPY --from=build /app/build/libs/*.jar stock-service.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
-ENTRYPOINT ["java", "-jar", "stock-service.jar"]
+ENTRYPOINT ["java","-jar","stock-service.jar"]

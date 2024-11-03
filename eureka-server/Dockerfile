@@ -1,19 +1,22 @@
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+FROM gradle:8.10.2-jdk17 AS build
 
 WORKDIR /app
 
-COPY eureka-server/pom.xml ./
+COPY eureka-server/build.gradle settings.gradle ./
 COPY eureka-server/src/main ./src/main
 
-RUN mvn clean install -DskipTests=true
-
+RUN gradle clean build -x test
 
 FROM openjdk:17
 
+#RUN addgroup -S app-group && adduser -S app-user -G app-group
+
+#USER app-user
+
 WORKDIR /app
 
-COPY --from=build /app/target/eureka-server-0.0.1-SNAPSHOT.jar eureka-server.jar
+COPY --from=build /app/build/libs/*.jar eureka-server.jar
 
-EXPOSE 8080
+EXPOSE 8761
 
-ENTRYPOINT ["java", "-jar", "eureka-server.jar"]
+ENTRYPOINT ["java","-jar","eureka-server.jar"]

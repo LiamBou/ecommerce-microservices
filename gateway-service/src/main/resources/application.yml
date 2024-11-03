@@ -7,7 +7,7 @@ logging:
 
 spring:
   application:
-    name: test-service
+    name: gateway-service
   cloud:
 
     gateway:
