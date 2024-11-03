@@ -1,4 +1,4 @@
-package org.example;
+package com.example;
 
 public class StockArticle {
     private final String articleId;
