@@ -1,7 +1,7 @@
 package com.example.stockservice.services;
 
-import org.example.StockArticle;
-import org.example.StockEvent;
+import com.example.StockArticle;
+import com.example.StockEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

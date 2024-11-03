@@ -14,10 +14,6 @@ RUN gradle clean build -x test
 
 FROM openjdk:17
 
-#RUN addgroup -S app-group && adduser -S app-user -G app-group
-
-#USER app-user
-
 WORKDIR /app
 
 COPY --from=build /app/build/libs/*.jar stock-service.jar

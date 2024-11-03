@@ -33,4 +33,9 @@ public class Order {
     private OrderStatus status;
 
     private LocalDateTime orderDate;
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+        this.totalAmount = orderItems.stream().mapToDouble(OrderItem::getPrice).sum();
+    }
 }

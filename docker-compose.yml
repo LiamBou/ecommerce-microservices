@@ -8,6 +8,7 @@ services:
 
   zookeeper:
     image: 'confluentinc/cp-zookeeper:latest'
+    container_name: zookeeper-1
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -18,6 +19,7 @@ services:
 
   kafka:
     image: 'confluentinc/cp-kafka:latest'
+    container_name: kafka
     depends_on:
       - zookeeper
     environment:
@@ -41,26 +43,26 @@ services:
     networks:
         - microservices-net
 
-#  gateway-service:
-#    build:
-#      context: .
-#      dockerfile: ./gateway-service/Dockerfile
-#    container_name: gateway-service
-#    depends_on:
-#      - eureka-server
-#    environment:
-#      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-#    ports:
-#      - "8084:8084"
-#    networks:
-#      - microservices-net
+  gateway-service:
+    build:
+      context: .
+      dockerfile: ./gateway-service/Dockerfile
+    container_name: gateway-service
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    ports:
+      - "8084:8084"
+    networks:
+      - microservices-net
 
 
   stock-service:
     build:
       context: .
       dockerfile: ./stock-service/Dockerfile
-    container_name: stock-api
+    container_name: stock-service
     depends_on:
       - stock-db
       - kafka
@@ -95,8 +97,8 @@ services:
 #  product-service:
 #    image: product-service:latest
 #    build:
-#      context: ./product-service
-#      dockerfile: Dockerfile
+#      context: .
+#      dockerfile: ./product-service/Dockerfile
 #    container_name: product-service
 #    depends_on:
 #      - product-mongodb
@@ -106,8 +108,8 @@ services:
 #      - SPRING_DATA_MONGODB_USERNAME=root
 #      - SPRING_DATA_MONGODB_PASSWORD=password
 #    ports:
-#      - "8081:8081"
-#
+#      - "8083:8083"
+
   product-mongodb:
     image: mongo:latest
     container_name: product-mongodb
@@ -121,33 +123,35 @@ services:
         MONGO_INITDB_DATABASE: product-service
     volumes:
       - ./data:/data/db
-#
-#
-#  order-mysql:
-#    image: mysql:latest
-#    container_name: order-mysql
-#    environment:
-#        - MYSQL_ROOT_PASSWORD=admin
-#        - MYSQL_DATABASE=order-service
-#        - MYSQL_USER=admin
-#        - MYSQL_PASSWORD=admin
-#    ports:
-#      - "3360:3306"
-#    volumes:
-#        - ./mysql:/var/lib/mysql
-#        - ./order-service/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-#
-#  order-service:
-#    image: order-service:latest
-#    build:
-#      context: ./order-service
-#      dockerfile: Dockerfile
-#    container_name: order-service
-#    depends_on:
-#      - order-mysql
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://order-mysql:3306/order-service
-#      - SPRING_DATASOURCE_USERNAME=admin
-#      - SPRING_DATASOURCE_PASSWORD=admin
-#    ports:
-#      - "8082:8082"
+
+
+  order-mysql:
+    image: mysql:latest
+    container_name: order-mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD=admin
+        - MYSQL_DATABASE=order-service
+        - MYSQL_USER=admin
+        - MYSQL_PASSWORD=admin
+    ports:
+      - "3360:3306"
+    volumes:
+        - ./mysql:/var/lib/mysql
+        - ./order-service/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  order-service:
+    image: order-service:latest
+    container_name: order-service
+    build:
+      context: .
+      dockerfile: ./order-service/Dockerfile
+    depends_on:
+      - order-mysql
+      - eureka-server
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://order-mysql:3306/order-service
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+    ports:
+      - "8082:8082"

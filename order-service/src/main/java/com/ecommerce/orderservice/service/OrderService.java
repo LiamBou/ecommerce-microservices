@@ -20,7 +20,7 @@ public class OrderService {
         Order order = new Order();
         order.setUserId(orderRequest.userId());
         order.setOrderItems(orderRequest.orderItems());
-        order.setTotalAmount(orderRequest.totalAmount());
+        // Order total amount is calculated based on the sum of the prices of the order items
         order.setStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDateTime.now());
         return orderRepository.save(order);
@@ -39,5 +39,4 @@ public class OrderService {
         order.setStatus(orderStatus);
         orderRepository.save(order);
     }
-
 }
