@@ -1,4 +1,4 @@
-package org.example;
+package com.example;
 
 public enum EventType {
     STOCK_UPDATED,

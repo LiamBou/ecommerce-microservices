@@ -2,21 +2,15 @@ FROM gradle:8.10.2-jdk17 AS build
 
 WORKDIR /app
 
-COPY build.gradle settings.gradle ./
-COPY src/main ./src/main
-
-RUN gradle clean build
+COPY product-service/build.gradle settings.gradle ./
+COPY product-service/src/main ./src/main
 
 FROM openjdk:17
-
-#RUN addgroup -S app-group && adduser -S app-user -G app-group
-
-#USER app-user
 
 WORKDIR /app
 
 COPY --from=build /app/build/libs/product-service-0.0.1-SNAPSHOT.jar product-service.jar
 
-EXPOSE 8081
+EXPOSE 8083
 
 ENTRYPOINT ["java","-jar","product-service.jar"]

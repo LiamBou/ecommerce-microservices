@@ -1,5 +1,6 @@
 package com.ecommerce.orderservice.controller;
 
+import com.ecommerce.orderservice.componant.KafkaProducer;
 import com.ecommerce.orderservice.dto.OrderRequest;
 import com.ecommerce.orderservice.model.Order;
 import com.ecommerce.orderservice.service.OrderService;
@@ -15,11 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final KafkaProducer kafkaProducer;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Order> placeOrder(@RequestBody OrderRequest orderRequest) {
         Order placedOrder = orderService.placeOrder(orderRequest);
+        kafkaProducer.sendStockChanges(placedOrder.getOrderItems());
         return ResponseEntity.status(HttpStatus.CREATED).body(placedOrder);
     }
 
