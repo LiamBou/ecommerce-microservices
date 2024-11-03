@@ -43,6 +43,24 @@ services:
     networks:
         - microservices-net
 
+  test-serv:
+    build:
+      context: .
+      dockerfile: ./test-serv/Dockerfile
+    container_name: product-service
+    depends_on:
+      - eureka-server
+      - product-mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://root:password@product-mongodb:27017/product-service?authSource=admin
+      - SPRING_DATA_MONGODB_DATABASE=product-service
+      - SPRING_DATA_MONGODB_USERNAME=root
+      - SPRING_DATA_MONGODB_PASSWORD=password
+    ports:
+      - "8083:8083"
+    networks:
+      - microservices-net
+
   gateway-service:
     build:
       context: .
@@ -94,20 +112,7 @@ services:
       - microservices-net
 
 
-  product-service:
-    build:
-      context: .
-      dockerfile: ./product-service/Dockerfile
-    container_name: product-service
-    depends_on:
-      - product-mongodb
-    environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:password@product-mongodb:27017/product-service?authSource=admin
-      - SPRING_DATA_MONGODB_DATABASE=product-service
-      - SPRING_DATA_MONGODB_USERNAME=root
-      - SPRING_DATA_MONGODB_PASSWORD=password
-    ports:
-      - "8083:8083"
+
 
   product-mongodb:
     image: mongo:latest
@@ -137,6 +142,8 @@ services:
     volumes:
         - ./mysql:/var/lib/mysql
         - ./order-service/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+        - microservices-net
 
   order-service:
     image: order-service:latest
@@ -152,5 +159,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://order-mysql:3306/order-service
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     ports:
       - "8082:8082"
+    networks:
+        - microservices-net
