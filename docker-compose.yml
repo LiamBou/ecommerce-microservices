@@ -95,7 +95,6 @@ services:
 
 
   product-service:
-    image: product-service:latest
     build:
       context: .
       dockerfile: ./product-service/Dockerfile
