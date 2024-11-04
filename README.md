@@ -20,6 +20,33 @@ Here is the architecture of the application:
 The services communicate with each other using REST APIs and Kafka. The services are independent and can be deployed 
 separately. This allows to scale the services independently and to replace them without affecting the other services.
 
+## Project structure
+The project is structured as follows:
+```
+├── eureka-server
+├── events-models
+├── frontend
+├── gateway-service
+├── order-service
+├── product-service
+├── stock-service
+└── docker-compose.yaml
+```
+
+## Technologies
+The project uses the following technologies:
+- **Spring Boot**: for the backend services
+- **Gradle**: for the build automation
+- **Angular**: for the frontend
+- **Docker**: for containerization
+- **Docker Compose**: for orchestrating the services
+- **Kafka**: for the message broker
+- **Zookeeper**: for the coordination of Kafka
+- **Eureka**: for the service registry
+- **PostgreSQL**: for the stock database
+- **MongoDB**: for the product database
+- **MySQL**: for the order database
+
 ## Getting started
 
 ### Installation
