@@ -12,8 +12,8 @@ FROM openjdk:17
 
 WORKDIR /app
 
-COPY --from=build /app/build/libs/*.jar test-serv.jar
+COPY --from=build /app/build/libs/*.jar product-service.jar
 
 EXPOSE 8081
 
-ENTRYPOINT ["java","-jar","test-serv.jar"]
+ENTRYPOINT ["java","-jar","product-service.jar"]
