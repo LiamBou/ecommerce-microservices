@@ -38,7 +38,7 @@ ensemble, le traçage des requêtes devient un processus automatisé et visuel q
 
 Dans notre implémentation, il manque certains services mentionnés dans l'architecture, comme le service d'authentification
 Nous avons commencé à implémenter un serveur avec Keycloak mais cela n'a pas abouti à temps.
-De ce fait plusieurs étapes du fonctionnement normal de l'application sont simulées (comme la connexion d'un utilisateur)
+De ce fait plusieurs étapes du fonctionnement normal de l'application sont simulées (comme la connexion d'un utilisateur).
 
-Nous avons également choisi de simuler le service de paiement via le front car autrement le service aurait été très vide,
-simplement histoire de montrer que le service de paiement est bien appelé donc avec juste une requête pour delay la réponse.
+Nous avons également choisi de simuler le service de paiement via le front car autrement le service aurait été très vide car
+il aurait simplement renvoyé un message de succès après un certain temps.
