@@ -42,13 +42,20 @@ spring:
     discovery:
       enabled: true
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-serv:8080/realms/ecommerce-microservices-realm
+
+
 
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://eureka:8761/eureka/
   instance:
     hostname: gateway-service
     prefer-ip-address: false

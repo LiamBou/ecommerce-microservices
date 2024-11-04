@@ -1,38 +1,37 @@
 version: '3.8'
-
+#
 networks:
   microservices-net:
     driver: bridge
 
 services:
-
-  zookeeper:
-    image: 'confluentinc/cp-zookeeper:latest'
-    container_name: zookeeper-1
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - '2181:2181'
-    networks:
-      - microservices-net
-
-  kafka:
-    image: 'confluentinc/cp-kafka:latest'
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    ports:
-      - '9092:9092'
-    networks:
-      - microservices-net
-
-
+#
+##  zookeeper:
+##    image: 'confluentinc/cp-zookeeper:latest'
+##    container_name: zookeeper-1
+##    environment:
+##      ZOOKEEPER_CLIENT_PORT: 2181
+##      ZOOKEEPER_TICK_TIME: 2000
+##    ports:
+##      - '2181:2181'
+##    networks:
+##      - microservices-net
+##
+##  kafka:
+##    image: 'confluentinc/cp-kafka:latest'
+##    container_name: kafka
+##    depends_on:
+##      - zookeeper
+##    environment:
+##      KAFKA_BROKER_ID: 1
+##      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+##      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+##      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+##    ports:
+##      - '9092:9092'
+##    networks:
+##      - microservices-net
+##
   eureka-server:
     build:
       context: .
@@ -42,25 +41,61 @@ services:
       - "8761:8761"
     networks:
         - microservices-net
-
-  test-serv:
-    build:
-      context: .
-      dockerfile: ./test-serv/Dockerfile
-    container_name: product-service
-    depends_on:
-      - eureka-server
-      - product-mongodb
+#
+  auth-serv:
+    image: quay.io/keycloak/keycloak:23.0.7
+    container_name: auth-serv
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://root:password@product-mongodb:27017/product-service?authSource=admin
-      - SPRING_DATA_MONGODB_DATABASE=product-service
-      - SPRING_DATA_MONGODB_USERNAME=root
-      - SPRING_DATA_MONGODB_PASSWORD=password
-    ports:
-      - "8083:8083"
-    networks:
-      - microservices-net
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloakdb:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
 
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: realm-settings.json
+    command: start-dev
+    depends_on:
+      - keycloakdb
+    ports:
+      - 8080:8080
+#
+  keycloakdb:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+##
+##  test-serv:
+##    build:
+##      context: .
+##      dockerfile: ./test-serv/Dockerfile
+##    container_name: product-service
+##    depends_on:
+##      - eureka-server
+##      - product-mongodb
+##    environment:
+##      - SPRING_DATA_MONGODB_URI=mongodb://root:password@product-mongodb:27017/product-service?authSource=admin
+##      - SPRING_DATA_MONGODB_DATABASE=product-service
+##      - SPRING_DATA_MONGODB_USERNAME=root
+##      - SPRING_DATA_MONGODB_PASSWORD=password
+##    ports:
+##      - "8083:8083"
+##    networks:
+##      - microservices-net
+##
   gateway-service:
     build:
       context: .
@@ -74,93 +109,91 @@ services:
       - "8084:8084"
     networks:
       - microservices-net
-
-
-  stock-service:
-    build:
-      context: .
-      dockerfile: ./stock-service/Dockerfile
-    container_name: stock-service
-    depends_on:
-      - stock-db
-      - kafka
-      - eureka-server
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD="admin"
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stock-db:5432/stock-db
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-    ports:
-      - "8081:8081"
-    networks:
-      - microservices-net
-
-  stock-db:
-    image: postgres:latest
-    container_name: stock-db
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=stock-db
-    ports:
-      - "5432:5432"
-    networks:
-      - microservices-net
-
-
-
-
-  product-mongodb:
-    image: mongo:latest
-    container_name: product-mongodb
-    ports:
-      - "27017:27017"
-    networks:
-      - microservices-net
-    environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: password
-        MONGO_INITDB_DATABASE: product-service
-    volumes:
-      - ./data:/data/db
-
-
-  order-mysql:
-    image: mysql:latest
-    container_name: order-mysql
-    environment:
-        - MYSQL_ROOT_PASSWORD=admin
-        - MYSQL_DATABASE=order-service
-        - MYSQL_USER=admin
-        - MYSQL_PASSWORD=admin
-    ports:
-      - "3360:3306"
-    volumes:
-        - ./mysql:/var/lib/mysql
-        - ./order-service/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-        - microservices-net
-
-  order-service:
-    image: order-service:latest
-    container_name: order-service
-    build:
-      context: .
-      dockerfile: ./order-service/Dockerfile
-    depends_on:
-      - order-mysql
-      - eureka-server
-      - kafka
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://order-mysql:3306/order-service
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-    ports:
-      - "8082:8082"
-    networks:
-        - microservices-net
+##
+##  stock-service:
+##    build:
+##      context: .
+##      dockerfile: ./stock-service/Dockerfile
+##    container_name: stock-service
+##    depends_on:
+##      - stock-db
+##      - kafka
+##      - eureka-server
+##    environment:
+##      - POSTGRES_USER=admin
+##      - POSTGRES_PASSWORD="admin"
+##      - SPRING_DATASOURCE_URL=jdbc:postgresql://stock-db:5432/stock-db
+##      - SPRING_DATASOURCE_USERNAME=admin
+##      - SPRING_DATASOURCE_PASSWORD=admin
+##      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+##      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+##      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+##    ports:
+##      - "8081:8081"
+##    networks:
+##      - microservices-net
+##
+##  stock-db:
+##    image: postgres:latest
+##    container_name: stock-db
+##    environment:
+##      - POSTGRES_USER=admin
+##      - POSTGRES_PASSWORD=admin
+##      - POSTGRES_DB=stock-db
+##    ports:
+##      - "5432:5432"
+##    networks:
+##      - microservices-net
+##
+##  product-mongodb:
+##    image: mongo:latest
+##    container_name: product-mongodb
+##    ports:
+##      - "27017:27017"
+##    networks:
+##      - microservices-net
+##    environment:
+##        MONGO_INITDB_ROOT_USERNAME: root
+##        MONGO_INITDB_ROOT_PASSWORD: password
+##        MONGO_INITDB_DATABASE: product-service
+##    volumes:
+##      - ./data:/data/db
+##
+##  order-mysql:
+##    image: mysql:latest
+##    container_name: order-mysql
+##    environment:
+##        - MYSQL_ROOT_PASSWORD=admin
+##        - MYSQL_DATABASE=order-service
+##        - MYSQL_USER=admin
+##        - MYSQL_PASSWORD=admin
+##    ports:
+##      - "3360:3306"
+##    volumes:
+##        - ./mysql:/var/lib/mysql
+##        - ./order-service/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+##    networks:
+##        - microservices-net
+##
+##  order-service:
+##    image: order-service:latest
+##    container_name: order-service
+##    build:
+##      context: .
+##      dockerfile: ./order-service/Dockerfile
+##    depends_on:
+##      - order-mysql
+##      - eureka-server
+##      - kafka
+##    environment:
+##      - SPRING_DATASOURCE_URL=jdbc:mysql://order-mysql:3306/order-service
+##      - SPRING_DATASOURCE_USERNAME=admin
+##      - SPRING_DATASOURCE_PASSWORD=admin
+##      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+##    ports:
+##      - "8082:8082"
+##    networks:
+##        - microservices-net
+#
+volumes:
+  postgres_data:
