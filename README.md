@@ -1,5 +1,8 @@
 # E-commerce-microservices-app
 
+## Developers
+Liam BOUDADI & Chloé VARIN
+
 ## About the project
 This project is a microservices architecture for an e-commerce application. It was made in the context of a school project
 to implement an event driven mmicroservices architecture.
