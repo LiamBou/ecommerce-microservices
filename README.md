@@ -73,3 +73,7 @@ To start the application, run the following command:
 docker-compose up
 ```
 You can access the frontend of the application at `http://localhost:3000`
+
+#### Notes
+
+Front not dockerized, working on it
