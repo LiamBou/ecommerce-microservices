@@ -1,0 +1,28 @@
+<div class="app-bar">
+  <div class="app-title"> E-Commerce Application</div>
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon aria-label="GoBack" fontIcon="arrow_back"></mat-icon>
+  </button>
+</div>
+<div class="checkout-container">
+  <h1>Checkout</h1>
+  <form [formGroup]="checkoutForm" class="checkout-form" (ngSubmit)="pay()">
+    <mat-form-field appearance="fill">
+      <mat-label>Card Number</mat-label>
+      <input matInput formControlName="cardNumber" placeholder="1234 5678 9012 3456" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Expiry Date</mat-label>
+      <input matInput formControlName="expiryDate" placeholder="MM/YY" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>CVV</mat-label>
+      <input matInput formControlName="cvv" placeholder="123" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Cardholder Name</mat-label>
+      <input matInput formControlName="cardholderName" placeholder="John Doe" required>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Pay Now</button>
+  </form>
+</div>

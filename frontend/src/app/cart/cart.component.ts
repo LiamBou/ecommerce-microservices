@@ -2,14 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import {CartService} from '../app.service';
 import {CartItem} from '../app.interface';
 import {CommonModule} from '@angular/common';
-import {MatFabButton, MatIconButton} from '@angular/material/button';
+import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {Location} from '@angular/common';
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatFabButton, MatIcon, MatIconButton],
+  imports: [CommonModule, MatFabButton, MatIcon, MatIconButton, MatButton],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -17,7 +19,8 @@ export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
 
   constructor(private cartService: CartService,
-              private Location: Location) {
+              private Location: Location,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -48,6 +51,11 @@ export class CartComponent implements OnInit {
   }
 
   goBack() {
-    this.Location.back();
+    this.router.navigate(['/']).then(r => console.log());
+  }
+
+  goToCheckout() {
+    this.router.navigate(['/cart/checkout']).then(r => console.log());
+
   }
 }

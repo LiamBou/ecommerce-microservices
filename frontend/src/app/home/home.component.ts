@@ -65,10 +65,10 @@ export class HomeComponent implements OnInit {
   }
 
   viewCart() {
-    this.router.navigate(['/cart']).then(r => console.log(r));
+    this.router.navigate(['/cart']).then(r => console.log());
   }
 
   viewAdmin() {
-    this.router.navigate(['/admin']).then(r => console.log(r));
+    this.router.navigate(['/admin']).then(r => console.log());
   }
 }
