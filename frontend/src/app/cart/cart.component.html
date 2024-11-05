@@ -1,0 +1,19 @@
+<div class="app-bar">
+  <div class="app-title"> E-Commerce Application</div>
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon aria-label="Basket" fontIcon="arrow_back"></mat-icon>
+  </button>
+</div>
+<div class="cart-page">
+  <h1>Basket</h1>
+  <div *ngFor="let item of cartItems" class="cart-item">
+    <div class="item-name">{{ item.product.name }}</div>
+    <div class="item-quantity">Quantity: {{ item.quantity }}</div>
+    <div class="item-price">Total Price: {{ item.totalPrice }}€</div>
+    <div class="item-actions">
+      <button mat-fab extended (click)="decreaseQuantity(item)">-</button>
+      <button mat-fab extended (click)="increaseQuantity(item)">+</button>
+      <button mat-fab extended (click)="deleteItem(item)">Delete</button>
+    </div>
+  </div>
+</div>

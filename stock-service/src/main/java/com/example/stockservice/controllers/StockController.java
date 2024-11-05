@@ -13,6 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController("/stock")
+@CrossOrigin(origins = "*")
 public class StockController {
 
   private final InventoryEntryService inventoryEntryService;
