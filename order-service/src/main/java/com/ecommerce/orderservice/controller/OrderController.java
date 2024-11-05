@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class OrderController {
     private final OrderService orderService;
     private final KafkaProducer kafkaProducer;
