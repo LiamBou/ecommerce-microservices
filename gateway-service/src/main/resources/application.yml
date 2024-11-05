@@ -19,26 +19,20 @@ spring:
           filters:
             - StripPrefix=1
 
-#        - id: product-service
-#          uri: lb://product-service
-#          predicates:
-#            - Path=/product/**
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product/**
 #          filters:
 #            - StripPrefix=1
-#
-#        - id: order-service
-#          uri: lb://order-service
-#          predicates:
-#            - Path=/order/**
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
 #          filters:
 #            - StripPrefix=1
-#
-#        - id: payment-service
-#          uri: lb://payment-service
-#          predicates:
-#            - Path=/payment/**
-#          filters:
-#            - StripPrefix=1
+
     discovery:
       enabled: true
 
