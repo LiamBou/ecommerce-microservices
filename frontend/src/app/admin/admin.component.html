@@ -1,0 +1,30 @@
+<div class="app-bar">
+  <div class="app-title"> E-Commerce Application</div>
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon aria-label="Basket" fontIcon="arrow_back"></mat-icon>
+  </button>
+</div>
+<div class="add-product">
+  <h1>Add Product</h1>
+  <div class="product-form">
+    <mat-form-field>
+      <input matInput placeholder="Name" [(ngModel)]="product.name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Race" [(ngModel)]="product.race">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Color" [(ngModel)]="product.color">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Price" [(ngModel)]="product.price">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Description" [(ngModel)]="product.description">
+    </mat-form-field>
+    <!--    <mat-form-field>-->
+    <!--      <input matInput placeholder="Image link" [(ngModel)]="product.image">-->
+    <!--    </mat-form-field>-->
+    <button mat-raised-button color="primary" (click)="addProduct()">Add Product</button>
+  </div>
+</div>

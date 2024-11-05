@@ -1,0 +1,35 @@
+<head>
+  <title> E-Commerce Application </title>
+  <link rel="preconnect" href="https://edge.disstg.commercecloud.salesforce.com">
+</head>
+<main class="main">
+  <div class="app-bar">
+    <div class="app-title"> E-Commerce Application</div>
+    <button mat-icon-button (click)="viewAdmin()">
+      <mat-icon aria-label="Basket" fontIcon="admin_panel_settings"></mat-icon>
+    </button>
+    <button mat-icon-button (click)="viewCart()">
+      <mat-icon aria-label="Basket" fontIcon="shopping_cart"></mat-icon>
+    </button>
+  </div>
+  <div class="content">
+    <div class="product-grid">
+      <div class="product-item" *ngFor="let product of products">
+        <div class="product-name">{{ product.name }}</div>
+        <img
+          ngSrc="https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BHDX_PRD/on/demandware.static/-/Library-Sites-CQLSharedLibrary/default/dwbec3b039/images/Blog/Articles/Chat/Race%20Le%20Norv%C3%A9gien%20/Race%20Norv%C3%A9gien.jpg"
+          alt="{{product.name}}" class="product-image" width="450" height="300" priority/>
+        <div class="product-race">Race : {{ product.race }}</div>
+        <div class="product-color">Color : {{ product.color }}</div>
+        <div class="product-price">Price : {{ product.price }}€</div>
+        <div class="product-stock">Stock : {{ product.stockQuantity }}</div>
+        <mat-divider></mat-divider>
+        <div class="product-description">Description :</div>
+        <div class="product-description">{{ product.description }}</div>
+        <button mat-fab extended class="add-to-cart-button" (click)="addToBucket(product)">Add to bucket</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<router-outlet/>
