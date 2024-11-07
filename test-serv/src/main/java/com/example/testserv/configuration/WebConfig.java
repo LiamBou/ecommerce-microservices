@@ -1,4 +1,4 @@
-package com.example.stockservice.configuration;
+package com.example.testserv.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

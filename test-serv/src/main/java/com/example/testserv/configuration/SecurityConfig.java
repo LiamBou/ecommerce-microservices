@@ -1,4 +1,4 @@
-package com.example.stockservice.configuration;
+package com.example.testserv.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +18,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
-                                "/v3/api-docs/**",         // Swagger API docs
-                                "/swagger-ui/**",          // Swagger UI
-                                "/swagger-ui.html",        // Swagger UI HTML page
-                                "/webjars/**",             // Webjars for Swagger
-                                "/stock/**"
+                                "/**"
                         ).permitAll() // Allow access to these endpoints
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for API requests

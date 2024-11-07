@@ -1,30 +1,66 @@
+<head>
+  <link rel="preconnect" href="https://edge.disstg.commercecloud.salesforce.com">
+  <title></title>
+</head>
 <div class="app-bar">
   <div class="app-title"> E-Commerce Application</div>
   <button mat-icon-button (click)="goBack()">
     <mat-icon aria-label="Basket" fontIcon="arrow_back"></mat-icon>
   </button>
 </div>
-<div class="add-product">
-  <h1>Add Product</h1>
-  <div class="product-form">
-    <mat-form-field>
-      <input matInput placeholder="Name" [(ngModel)]="product.name">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Race" [(ngModel)]="product.race">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Color" [(ngModel)]="product.color">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Price" [(ngModel)]="product.price">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Description" [(ngModel)]="product.description">
-    </mat-form-field>
-    <!--    <mat-form-field>-->
-    <!--      <input matInput placeholder="Image link" [(ngModel)]="product.image">-->
-    <!--    </mat-form-field>-->
-    <button mat-raised-button color="primary" (click)="addProduct()">Add Product</button>
+<main class="main">
+  <div class="product-grid">
+    <div class="product-item" *ngFor="let product of products"
+         [ngClass]="{'out-of-stock': product.stockQuantity === 0}">
+      <div class="product-name">{{ product.name }}</div>
+      <img
+        ngSrc="https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BHDX_PRD/on/demandware.static/-/Library-Sites-CQLSharedLibrary/default/dwbec3b039/images/Blog/Articles/Chat/Race%20Le%20Norv%C3%A9gien%20/Race%20Norv%C3%A9gien.jpg"
+        alt="{{product.name}}" class="product-image" width="450" height="300" priority/>
+      <div class="product-race">Race : {{ product.race }}</div>
+      <div class="product-color">Color : {{ product.color }}</div>
+      <div class="product-price">Price : {{ product.price }}€</div>
+      <div class="product-stock">Stock : {{ product.stockQuantity }}</div>
+      <mat-divider></mat-divider>
+      <div class="product-description">Description :</div>
+      <div class="product-description">{{ product.description }}</div>
+      <div class="admin-product-actions">
+        <div class="admin-product-stock">
+          <mat-form-field>
+            <input matInput placeholder="Stock" [(ngModel)]="product.stockQuantity">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="editStock(product.id, product.stockQuantity)">Update Stock
+          </button>
+        </div>
+
+        <button mat-raised-button color="warn" (click)="deleteProduct(product.id)">Delete</button>
+      </div>
+    </div>
   </div>
-</div>
+  <div class="add-product">
+    <h1>Add Product</h1>
+    <div class="product-form">
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="product.name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Race" [(ngModel)]="product.race">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Color" [(ngModel)]="product.color">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Price" [(ngModel)]="product.price">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Stock" [(ngModel)]="product.stockQuantity">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Description" [(ngModel)]="product.description">
+      </mat-form-field>
+      <!--    <mat-form-field>-->
+      <!--      <input matInput placeholder="Image link" [(ngModel)]="product.image">-->
+      <!--    </mat-form-field>-->
+      <button mat-raised-button color="primary" (click)="addProduct()">Add Product</button>
+    </div>
+  </div>
+</main>

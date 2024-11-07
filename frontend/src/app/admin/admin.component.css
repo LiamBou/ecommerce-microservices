@@ -16,6 +16,40 @@
   padding-left: 40px;
 }
 
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.product-item {
+  border: 1px solid #ccc;
+  padding: 16px;
+  text-align: center;
+}
+
+.product-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.product-name {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.product-item.out-of-stock {
+  background-color: #e0e0e0;
+  opacity: 0.6;
+}
+
+.admin-product-stock {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .add-product {
   padding: 20px;
   max-width: 600px;
