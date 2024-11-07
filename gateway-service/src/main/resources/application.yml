@@ -23,18 +23,21 @@ spring:
           uri: lb://product-service
           predicates:
             - Path=/product/**
-#          filters:
-#            - StripPrefix=1
+        #          filters:
+        #            - StripPrefix=1
 
         - id: order-service
           uri: lb://order-service
           predicates:
             - Path=/order/**
-#          filters:
-#            - StripPrefix=1
+    #          filters:
+    #            - StripPrefix=1
 
     discovery:
       enabled: true
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
 
 
 eureka:

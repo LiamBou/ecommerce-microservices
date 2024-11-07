@@ -10,11 +10,13 @@
     </button>
     <button mat-icon-button (click)="viewCart()">
       <mat-icon aria-label="Basket" fontIcon="shopping_cart"></mat-icon>
+      <span class="basket-count" *ngIf="basketCount > 0">{{ basketCount }}</span>
     </button>
   </div>
   <div class="content">
     <div class="product-grid">
-      <div class="product-item" *ngFor="let product of products">
+      <div class="product-item" *ngFor="let product of products"
+           [ngClass]="{'out-of-stock': product.stockQuantity === 0}">
         <div class="product-name">{{ product.name }}</div>
         <img
           ngSrc="https://edge.disstg.commercecloud.salesforce.com/dw/image/v2/BHDX_PRD/on/demandware.static/-/Library-Sites-CQLSharedLibrary/default/dwbec3b039/images/Blog/Articles/Chat/Race%20Le%20Norv%C3%A9gien%20/Race%20Norv%C3%A9gien.jpg"
@@ -26,7 +28,9 @@
         <mat-divider></mat-divider>
         <div class="product-description">Description :</div>
         <div class="product-description">{{ product.description }}</div>
-        <button mat-fab extended class="add-to-cart-button" (click)="addToBucket(product)">Add to bucket</button>
+        <button mat-fab extended class="add-to-cart-button" (click)="addToBucket(product)"
+                [disabled]="product.stockQuantity === 0">Add to bucket
+        </button>
       </div>
     </div>
   </div>

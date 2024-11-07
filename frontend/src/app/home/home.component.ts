@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Product, Stock} from "../app.interface";
 import {CartService, ProductService, StockService} from "../app.service";
 import {MatDividerModule} from '@angular/material/divider';
@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, NgForOf, NgOptimizedImage, MatDividerModule, MatIconModule, MatFabButton, MatIconButton],
+  imports: [RouterOutlet, NgForOf, NgOptimizedImage, MatDividerModule, MatIconModule, MatFabButton, MatIconButton, NgClass, NgIf],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   products: Product[] = [];
   stocks: Stock[] = [];
   title = 'frontend';
+  basketCount = 10;
 
   constructor(private productService: ProductService,
               private stockService: StockService,
@@ -42,6 +43,7 @@ export class HomeComponent implements OnInit {
         });
       });
     });
+    this.updateBasketCount();
   }
 
   addToBucket(product: Product) {
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit {
     if (cartItem) {
       cartItem.quantity += 1;
       cartItem.totalPrice = cartItem.quantity * product.price;
+      this.basketCount += 1;
     } else {
       cartItem = {
         product: product,
@@ -58,10 +61,15 @@ export class HomeComponent implements OnInit {
         totalPrice: product.price
       };
       cart.push(cartItem);
+      this.basketCount += 1;
     }
 
     this.cartService.updateCart(cart);
     console.log(cartItem);
+  }
+
+  updateBasketCount() {
+    this.basketCount = this.cartService.getCart().reduce((acc, item) => acc + item.quantity, 0);
   }
 
   viewCart() {

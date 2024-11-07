@@ -17,7 +17,7 @@ public class InventoryEntryServiceImpl implements InventoryEntryService {
     @Override
     public InventoryEntry createEntry(String article_id, int quantity) {
         System.out.println("Creating entry---");
-        InventoryEntry inventoryEntry = new InventoryEntry(article_id,quantity);
+        InventoryEntry inventoryEntry = new InventoryEntry(article_id, quantity);
         return inventoryEntryRepsitory.saveAndFlush(inventoryEntry);
     }
 
@@ -36,18 +36,19 @@ public class InventoryEntryServiceImpl implements InventoryEntryService {
     @Override
     public InventoryEntryDto updateEntry(String article_id, int quantity) {
         InventoryEntry inventoryEntry = inventoryEntryRepsitory.findByArticleId(article_id).orElse(null);
-        if(inventoryEntry != null){
+        if (inventoryEntry != null) {
             // update in the db
-            inventoryEntryRepsitory.updateQuantityById(inventoryEntry.getId(), inventoryEntry.getQuantity() + quantity);
+            inventoryEntryRepsitory.updateQuantityById(inventoryEntry.getId(), quantity);
         }
         return null;
     }
 
     @Override
-    public void deleteEntry(int id) {    }
+    public void deleteEntry(int id) {
+    }
 
     @Override
-    public InventoryEntryDto getEntryByArticleId(String articleId){
+    public InventoryEntryDto getEntryByArticleId(String articleId) {
         return inventoryEntryRepsitory.findByArticleId(articleId).map(InventoryEntry::toDto).orElse(null);
     }
 

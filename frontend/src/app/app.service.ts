@@ -17,6 +17,12 @@ export class OrderService {
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.baseUrl}/order`);
   }
+
+  addOrder(order: Order) {
+    //return this.http.post(`${this.baseUrl}/order`, order);
+    console.log(order);
+    return this.http.post(`http://localhost:8082/order`, order);
+  }
 }
 
 @Injectable({
@@ -25,16 +31,26 @@ export class OrderService {
 export class ProductService {
   private baseUrl = 'http://localhost:8084';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private stockService: StockService) {
   }
 
   addProduct(product: Product) {
-    return this.http.post(`${this.baseUrl}/product`, product);
+    const {stockQuantity, id, ...productWithoutStock} = product;
+    console.log(productWithoutStock);
+    // return this.http.post(`${this.baseUrl}/product`, productWithoutStock);
+    return this.http.post(`http://localhost:8083/product`, productWithoutStock);
   }
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.baseUrl}/product`);
   }
+
+  deleteProduct(id: string) {
+    this.stockService.editStock(id, -1).subscribe(() => {
+      return this.http.delete(`${this.baseUrl}/product/${id}`);
+    });
+  }
+
 }
 
 
@@ -50,6 +66,13 @@ export class StockService {
   getStocks(): Observable<Stock[]> {
     return this.http.get<Stock[]>(`${this.baseUrl}/stock/get/all`);
   }
+
+  editStock(product_id: String, newQuantity: number) {
+    //return this.http.post(`${this.baseUrl}/stock/add/${product_id}/${newQuantity}`, {});
+    return this.http.post(`http://localhost:8081/add/${product_id}/${newQuantity}`, {});
+
+  }
+
 }
 
 @Injectable({
@@ -68,5 +91,9 @@ export class CartService {
   getCart(): CartItem[] {
     const cart = this.cookieService.get(this.cartKey);
     return cart ? JSON.parse(cart) : [];
+  }
+
+  clearCart() {
+    this.cookieService.delete(this.cartKey);
   }
 }

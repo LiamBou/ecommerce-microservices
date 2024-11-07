@@ -42,7 +42,7 @@ export class CartComponent implements OnInit {
   }
 
   deleteItem(item: CartItem) {
-    this.cartItems = this.cartItems.filter(cartItem => cartItem !== item);
+    this.cartItems = this.cartItems.filter(i => i !== item);
     this.updateCart();
   }
 
@@ -50,12 +50,12 @@ export class CartComponent implements OnInit {
     this.cartService.updateCart(this.cartItems);
   }
 
+
   goBack() {
     this.router.navigate(['/']).then(r => console.log());
   }
 
   goToCheckout() {
     this.router.navigate(['/cart/checkout']).then(r => console.log());
-
   }
 }

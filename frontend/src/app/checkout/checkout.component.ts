@@ -8,6 +8,9 @@ import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CartItem, Order} from '../app.interface';
+import {CartService, OrderService} from '../app.service';
+import {CookieService} from 'ngx-cookie-service';
 
 
 @Component({
@@ -19,11 +22,15 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 })
 export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup = new FormGroup({});
+  cartItems: CartItem[] = [];
 
   constructor(
     private Location: Location,
     private router: Router,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private orderService: OrderService,
+    private cartService: CartService,
+    private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -34,11 +41,31 @@ export class CheckoutComponent implements OnInit {
       cardholderName: ['', Validators.required]
     });
 
+    this.cartItems = this.cartService.getCart();
+
   }
 
   pay(): void {
     if (this.checkoutForm.valid) {
-      this.Location.back();
+      const order: Order = {
+        userId: 1,
+        orderItems: this.cartItems.map(item => ({
+          id: item.product.id,
+          productId: item.product.id,
+          quantity: item.quantity,
+          price: item.product.price
+        })),
+        status: 'PAID',
+        orderDate: new Date().toISOString()
+      }
+      this.orderService.addOrder(order).subscribe(response => {
+        console.log('Order successfully sent:', response);
+        this.cartService.clearCart();
+        this.router.navigate(['/']).then(r => console.log());
+      }, error => {
+        console.error('Error sending order:', error);
+      });
+      //this.Location.back();
     } else {
       console.log('Form is invalid');
     }
